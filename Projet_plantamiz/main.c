@@ -14,6 +14,30 @@ void deplacecurseur(char touche, int *x, int *y) {
         else if (touche == 'd' && *x < LARGEUR) (*x)++;
     }
 }
+
+void afficherregles(){
+
+    printf("utiliser z,q,s,d pour permuter les items et les aligner avant la fin du temps\n");
+}
+
+void permumation((int *grille)[COLS],r1,r2,c1,c2){
+
+    int temp;
+    temp=grille[r1][c1];
+    grille[r1][c1]=grille[r2][c2];
+    grille[r2][c2]=temp;
+}
+
+int menu(){
+
+    int choix;
+    printf("1.Niveau facile\n");
+    printf("2.Niveau normal\n");
+    printf("3.Niveau difficile\n");
+    scanf("%d",&choix);
+    return choix;
+}
+
  int main (){
      return 0;
  }
