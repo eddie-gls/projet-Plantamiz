@@ -15,6 +15,12 @@ int menu(){
     printf("2.Niveau normal\n");
     printf("3.Niveau difficile\n");
     scanf("%d",&choix);
+
+    if (choix<1 || choix>3){
+        printf("Veuillez saisir un nombre entre 1 et 3\n");
+        scanf("%d",&choix);
+    }
+    
     return choix;
 }
 
