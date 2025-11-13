@@ -1,4 +1,6 @@
 #include "main.h"
+#include "jeu.h"
+
 void afficherregles(){
 
     printf("Utilisez z,q,s,d pour se deplacer sur la map.\n");
