@@ -8,7 +8,7 @@ SetConsoleTextAttribute(H,couleurDeFond*16+couleurDuTexte);
 
 
 
-// Déplacement du curseur
+// Dï¿½placement du curseur
 void gotoligcol(int lig, int col) {
     COORD mycoord;
     mycoord.X = col;
@@ -65,7 +65,7 @@ void afficherMat(char matrice[HAUTEUR][LARGEUR]) {
                     Color(11, 0);
                     break; // Bleu clair
                 case 4:
-                    Color(4, 0); // Rouge foncé
+                    Color(4, 0); // Rouge foncï¿½
                     break;
             }
 
@@ -88,11 +88,65 @@ void deplacecurseur(char touche, int *x, int *y) {
 }
 
 
+void suprimefigure(int LIGNES, int COLONNES) {
+    matrice[LIGNES][COLONNES] = ' ';  
+}
+    
+void detectionAlignementHorizontal() {
+    for (int i = 1; i < LIGNES; i++){
+        int compteur = 1;
+        for (int j = 1; j < COLONNES;j++){
+            if matrice[i][j]=matrice[i][j+1]{
+                compteur ++;
+                if (compteur >= 3){
+                    for (int k=j-compteur; k < j; k++){ //Si l'alignement atteint 3 ou plus, on appelle la fonction  supprimefigure
+                        supprimefigure(matrice[i][k]);
+                    }
+                    
+                }
+            else {
+                compteur=1
+            }    
+             
+            }
+            
+        }
+        
+    }
+}
+   
+void detectionAlignementVertical() {
+    for (int j = 1; j < COLONNES; j++){
+        int compteur = 1;
+        for (int i = 1; i < LIGNES; i++){
+            if matrice[i][j]=matrice[i+1][j]{
+                compteur ++;
+                if (compteur >= 3){
+                    for (int k=j-compteur; k < j; k++){ 
+                        supprimefigure(matrice[k][j]);
+                    }
+                    
+                }
+            else {
+                compteur=1
+            }    
+             
+            }
+            
+        }
+        
+    }
+}
+   
+   
+   
+
+
 void permutation(int grille[HAUTEUR][LARGEUR], int x, int y) {
-    char touche = getch(); // lit la direction après avoir appuyé sur espace
+    char touche = getch(); // lit la direction aprï¿½s avoir appuyï¿½ sur espace
     int x2 = x, y2 = y;
 
-    // Détermine la case à échanger selon la direction
+    // Dï¿½termine la case ï¿½ ï¿½changer selon la direction
     if (touche == 'z' && y > 0)
         y2--;
     else if (touche == 's' && y < HAUTEUR - 1)
@@ -104,7 +158,7 @@ void permutation(int grille[HAUTEUR][LARGEUR], int x, int y) {
     else
         return; // touche invalide, on sort sans rien faire
 
-    // Échange les deux cases
+    // ï¿½change les deux cases
     int temp = grille[y][x];
     grille[y][x] = grille[y2][x2];
     grille[y2][x2] = temp;
