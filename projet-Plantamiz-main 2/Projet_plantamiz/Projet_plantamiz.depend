@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1763030602 source:c:\users\claud\documents\ece\projet plantamiz\projet-plantamiz\projet_plantamiz\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<time.h>
+	<windows.h>
+
