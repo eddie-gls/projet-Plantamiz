@@ -1,4 +1,4 @@
-
+#include "jeu.h"
 
 void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de couleurs
 {
@@ -89,9 +89,9 @@ void deplacecurseur(char touche, int *x, int *y) {
 
 
 void suprimefigure(int LIGNES, int COLONNES) {
-    matrice[LIGNES][COLONNES] = ' ';  
+    matrice[LIGNES][COLONNES] = ' ';
 }
-    
+
 void detectionAlignementHorizontal() {
     for (int i = 1; i < LIGNES; i++){
         int compteur = 1;
@@ -102,19 +102,19 @@ void detectionAlignementHorizontal() {
                     for (int k=j-compteur; k < j; k++){ //Si l'alignement atteint 3 ou plus, on appelle la fonction  supprimefigure
                         supprimefigure(matrice[i][k]);
                     }
-                    
+
                 }
             else {
                 compteur=1
-            }    
-             
             }
-            
+
+            }
+
         }
-        
+
     }
 }
-   
+
 void detectionAlignementVertical() {
     for (int j = 1; j < COLONNES; j++){
         int compteur = 1;
@@ -122,24 +122,26 @@ void detectionAlignementVertical() {
             if matrice[i][j]=matrice[i+1][j]{
                 compteur ++;
                 if (compteur >= 3){
-                    for (int k=j-compteur; k < j; k++){ 
+                    for (int k=j-compteur; k < j; k++){
                         supprimefigure(matrice[k][j]);
                     }
-                    
+
                 }
             else {
                 compteur=1
-            }    
-             
             }
-            
+
+            }
+
         }
-        
+
     }
 }
-   
-   
-   
+void calibrermat (void afficherMat(char matrice[HAUTEUR][LARGEUR])){
+    if ()
+}
+
+
 
 
 void permutation(int grille[HAUTEUR][LARGEUR], int x, int y) {
