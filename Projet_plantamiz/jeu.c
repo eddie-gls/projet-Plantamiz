@@ -148,7 +148,7 @@ void permutation(int grille[HAUTEUR][LARGEUR], int x, int y) {
     char touche = getch(); // lit la direction apr�s avoir appuy� sur espace
     int x2 = x, y2 = y;
 
-    // D�termine la case � �changer selon la direction
+    // Détermine la case à échanger selon la direction
     if (touche == 'z' && y > 0)
         y2--;
     else if (touche == 's' && y < HAUTEUR - 1)
