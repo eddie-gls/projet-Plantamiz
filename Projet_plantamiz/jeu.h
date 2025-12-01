@@ -1,7 +1,7 @@
 #ifndef JEU_H_INCLUDED
 #define JEU_H_INCLUDED
 #include <stdio.h>
-#include <stdlib.h>n
+#include <stdlib.h>
 #include <conio.h>
 #include <time.h>
 #define HAUTEUR 25
@@ -13,5 +13,5 @@ void afficherCadre(); //affiche la zone du jeu
 void afficherMat(char matrice[HAUTEUR][LARGEUR]); // affiche la matrice avec les items générer de manière aléatoire
 void deplacecurseur(char touche, int *x, int *y); // déplace le curseur en fonction de la touche presser
 void permutation(int grille[HAUTEUR][LARGEUR], int x, int y); // permutation de deux objets
-
+lieu* lieualignement(char grille [HAUTEUR][LARGEUR]);// renvoie une liste chainée qui a dans chaque structure les coordonées x et y de ou se trouve les emplacements libre
 #endif // JEU_H_INCLUDED

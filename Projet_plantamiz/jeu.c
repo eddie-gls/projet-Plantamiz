@@ -65,7 +65,7 @@ void afficherMat(char matrice[HAUTEUR][LARGEUR]) {
                     Color(11, 0);
                     break; // Bleu clair
                 case 4:
-                    Color(4, 0); // Rouge fonc�
+                    Color(4, 0); // Rouge foncé
                     break;
             }
 
@@ -164,4 +164,34 @@ void permutation(int grille[HAUTEUR][LARGEUR], int x, int y) {
     int temp = grille[y][x];
     grille[y][x] = grille[y2][x2];
     grille[y2][x2] = temp;
+}
+typedef struct lieu {
+    int x;
+    int y;
+    struct  lieu* next;
+} lieu;
+
+lieu* lieualignement(char grille[HAUTEUR][LARGEUR]){
+    lieu* liste= NULL;
+    lieu*fin=NULL;
+    for (int i=0; i<HAUTEUR; i++){
+        for (int j=0;j<LARGEUR; j++){
+
+            if (grille[i][j]== 0) {
+                lieu* p= malloc (sizeof(lieu));
+                p->x=i;
+                p->y=j;
+                p->next = NULL;
+                if (liste==NULL){
+                    liste=p;
+                    fin=p;
+                }
+                else{
+                    fin->next =p;
+                    fin=p;
+                }
+            }
+        }
+    }
+    return liste;
 }
