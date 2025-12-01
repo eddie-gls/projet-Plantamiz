@@ -27,3 +27,29 @@ int menu(){
 int main (){
      return 0;
 }
+
+int chargerprogression(char nom_joueur[],int *niveau){
+    char nom_joueur[100];
+	int niveau;
+	if (chargerprogression(nom_joueur,&niveau)){
+		printf("%s, niveau : %d",nom_joueur,niveau);
+	}
+	else{
+		printf("entrer votre nom");
+		scanf("%s",nom_joueur);
+		niveau=1;
+	}
+	return 0;
+}
+
+int main(){
+    int vies=5;
+	affichervie(hauteur,largeur,vies);
+	vieperdu(&vies);
+	affichervie(hauteur,largeur,vies);
+	if (perdu(vies)){
+		printf("Vous avez perdu");
+		sauvegarderprogression(nom_joueur,niveau)
+		return 0;
+	}
+}
