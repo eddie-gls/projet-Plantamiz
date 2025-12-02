@@ -177,7 +177,7 @@ lieu* lieualignement(char grille[HAUTEUR][LARGEUR]){
     for (int i=0; i<HAUTEUR; i++){
         for (int j=0;j<LARGEUR; j++){
 
-            if (grille[i][j]== 0) {
+            if (grille[i][j]== ' ') {
                 lieu* p= malloc (sizeof(lieu));
                 p->x=i;
                 p->y=j;
@@ -196,6 +196,22 @@ lieu* lieualignement(char grille[HAUTEUR][LARGEUR]){
     return liste;
 }
 
+int gravite(char grille[HAUTEUR][LARGEUR]) {
+    int mouvement = 0;
+
+    for (int j = 0; j < LARGEUR; j++) {
+        for (int i = HAUTEUR - 1; i > 0; i--) {
+            if (grille[i][j] == ' ' && grille[i-1][j] != ' ') {
+                grille[i][j] = grille[i-1][j];
+                grille[i-1][j] = ' ';
+                mouvement = 1;
+            }
+        }
+    }
+
+    return mouvement;
+}
+
 void sauvegarderprogression(char nom_joueur[], int niveau){
 	FILE* pf=fopen("sauvegarde.txt","w");
 	if (pf==NULL){
@@ -206,7 +222,7 @@ void sauvegarderprogression(char nom_joueur[], int niveau){
 	fprintf(pf,"%d\n",niveau);
 
 	if (fclose(pf)==0){
-		printf("fichier sauvegarder");	
+		printf("fichier sauvegarder");
 	}
 	else{
 		perror("erreur lors de la sauvegarde du fichier");
