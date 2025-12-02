@@ -195,3 +195,57 @@ lieu* lieualignement(char grille[HAUTEUR][LARGEUR]){
     }
     return liste;
 }
+
+void sauvegarderprogression(char nom_joueur[], int niveau){
+	FILE* pf=fopen("sauvegarde.txt","w");
+	if (pf==NULL){
+		perror("Impossible de créer le fichier");
+		return 1;
+	}
+	fprintf(pf, "%s\n",nom_joueur);
+	fprintf(pf,"%d\n",niveau);
+
+	if (fclose(pf)==0){
+		printf("fichier sauvegarder");	
+	}
+	else{
+		perror("erreur lors de la sauvegarde du fichier");
+	}
+}
+
+int chargerprogression(char nom_joueur[],int *niveau){
+	FILE* pf=fopen("sauvegarde.txt","r");
+	if (pf==NULL){
+		perror("Erreur lors de l'ouverture du fichier de sauvegarde");
+		return 1;
+	}
+	printf("Fichier de sauvegarde ouvert \n");
+	fscanf(pf,"%s",nom_joueur);
+	fscanf(pf,"%d",niveau);
+	fclose(pf);
+	return 1;
+
+}
+
+void affichervie(int hauteur, int largeur, int vies){
+	gotoligcol(1,10);
+	color(1,0);
+	printf("Vies restantes: %d \n",vies);
+	color(7,0);
+}
+
+void vieperdu(int *vies){
+	if(*vies>0){
+		*vies = *vies - 1;
+	}
+}
+
+int Perdu(vies){
+	if(vies=0){
+		printf("Vous avez perdu\n");
+		return 1;
+	}
+	else{
+		return 0;
+	}
+}
