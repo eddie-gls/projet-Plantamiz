@@ -52,19 +52,19 @@ void afficherMat(char matrice[HAUTEUR][LARGEUR]) {
         for (j = 0; j < LARGEUR; j++) {
             matrice[i][j] = lettres[rand() % 5];
             switch (matrice[i][j]) {
-                case 0:
+                case 'S':
                     Color(14, 0);// Jaune
                     break;
-                case 1:
+                case 'F':
                     Color(12, 0);//  Rouge
                     break;
-                case 2:
+                case 'P':
                     Color(10, 0); //  Vert
                     break;
-                case 3:
+                case 'O':
                     Color(11, 0);
                     break; // Bleu clair
-                case 4:
+                case 'M':
                     Color(4, 0); // Rouge foncé
                     break;
             }
@@ -86,69 +86,78 @@ void deplacecurseur(char touche, int *x, int *y) {
         gotoligcol(*y,*x);
     }
 }
+int detectionfigures(char matrice[HAUTEUR][LARGEUR]) {
+// alignement horizontal
 
-
-void suprimefigure(int LIGNES, int COLONNES) {
-    matrice[LIGNES][COLONNES] = ' ';
-}
-
-void detectionAlignementHorizontal() {
-    for (int i = 1; i < LIGNES; i++){
+    for (int i = 1; i < HAUTEUR; i++) {
         int compteur = 1;
-        for (int j = 1; j < COLONNES;j++){
-            if matrice[i][j]=matrice[i][j+1]{
-                compteur ++;
+
+        for (int j = 1; j < LARGEUR; j++) {
+            if (matrice[i][j] == matrice[i][j-1]) {
+                compteur++;
+                if (compteur >= 3) {
+                    return 1;
+            } else {
+                compteur = 1;
+            }
+        }
+    }
+  }
+  // vertical
+    for (int j = 1; j < LARGEUR; j++) {
+        int compteur = 1;
+
+        for (int i = 1; i < HAUTEUR; i++) {
+            if (matrice[i][j] != VIDE &&
+                matrice[i][j] == matrice[i-1][j]) {
+                compteur++;
                 if (compteur >= 3){
-                    for (int k=j-compteur; k < j; k++){ //Si l'alignement atteint 3 ou plus, on appelle la fonction  supprimefigure
-                        supprimefigure(matrice[i][k]);
-                    }
-
+                    return 1;
                 }
-            else {
-                compteur=1
+            } else {
+                compteur = 1;
             }
+        }
+    }
 
-            }
+
+
+
+// rectangle
+    for (int j = 1; j < LARGEUR - 2; j++) {
+        for (int i = 1; i < HAUTEUR - 2; i++) {
+            if (matrice[i][j] == matrice[i][j+1] &&
+                matrice[i][j] == matrice[i][j+2] &&
+                matrice[i][j] == matrice[i+1][j] &&
+                matrice[i][j] == matrice[i+2][j]) {
+                    return 1;
 
         }
+    }
 
+    }
+// sous forme d un H
+for (int i = 1; i < HAUTEUR - 2; i++) {
+    for (int j = 1; j < LARGEUR - 2; j++) {
+
+        if (matrice[i][j] == matrice[i+1][j]   && matrice[i][j] == matrice[i+2][j] &&
+            matrice[i][j] == matrice[i][j+2]   && matrice[i][j] == matrice[i+1][j+2] && matrice[i][j] == matrice[i+2][j+2] &&
+            matrice[i][j] == matrice[i+1][j+1]) {
+
+            return 1;
+        }
     }
 }
 
-void detectionAlignementVertical() {
-    for (int j = 1; j < COLONNES; j++){
-        int compteur = 1;
-        for (int i = 1; i < LIGNES; i++){
-            if matrice[i][j]=matrice[i+1][j]{
-                compteur ++;
-                if (compteur >= 3){
-                    for (int k=j-compteur; k < j; k++){
-                        supprimefigure(matrice[k][j]);
-                    }
-
-                }
-            else {
-                compteur=1
-            }
-
-            }
-
-        }
-
-    }
-}
-void calibrermat (void afficherMat(char matrice[HAUTEUR][LARGEUR])){
-    if ()
-}
 
 
 
 
 void permutation(int grille[HAUTEUR][LARGEUR], int x, int y) {
-    char touche = getch(); // lit la direction apr�s avoir appuy� sur espace
+    char touche = getch(); // lit la direction apres avoir appuye sur espace
     int x2 = x, y2 = y;
 
-    // Détermine la case à échanger selon la direction
+    // Determine la case à echanger selon la direction
     if (touche == 'z' && y > 0)
         y2--;
     else if (touche == 's' && y < HAUTEUR - 1)
@@ -160,42 +169,11 @@ void permutation(int grille[HAUTEUR][LARGEUR], int x, int y) {
     else
         return; // touche invalide, on sort sans rien faire
 
-    // �change les deux cases
+    // echange les deux cases
     int temp = grille[y][x];
     grille[y][x] = grille[y2][x2];
     grille[y2][x2] = temp;
 }
-typedef struct lieu {
-    int x;
-    int y;
-    struct  lieu* next;
-} lieu;
-
-lieu* lieualignement(char grille[HAUTEUR][LARGEUR]){
-    lieu* liste= NULL;
-    lieu*fin=NULL;
-    for (int i=0; i<HAUTEUR; i++){
-        for (int j=0;j<LARGEUR; j++){
-
-            if (grille[i][j]== ' ') {
-                lieu* p= malloc (sizeof(lieu));
-                p->x=i;
-                p->y=j;
-                p->next = NULL;
-                if (liste==NULL){
-                    liste=p;
-                    fin=p;
-                }
-                else{
-                    fin->next =p;
-                    fin=p;
-                }
-            }
-        }
-    }
-    return liste;
-}
-
 int gravite(char grille[HAUTEUR][LARGEUR]) {
     int mouvement = 0;
 
@@ -210,6 +188,20 @@ int gravite(char grille[HAUTEUR][LARGEUR]) {
     }
 
     return mouvement;
+}
+void remplir(char grille [HAUTEUR][LARGEUR]){
+    char lettres[] = {'S', 'F', 'P', 'O', 'M'};
+    for (int i=0; i<LARGEUR; i++){
+        if (grille[0][i]==' '){
+            grille[0][i] = lettres[rand() % 5];
+        }
+    }
+}
+void calibrermat (char matrice[HAUTEUR][LARGEUR]){
+    if(detectionfigures(matrice)==1){
+            while(gravite(matrice)==1){}
+            remplir(matrice);
+    }
 }
 
 void sauvegarderprogression(char nom_joueur[], int niveau){
@@ -257,7 +249,7 @@ void vieperdu(int *vies){
 }
 
 int Perdu(vies){
-	if(vies=0){
+	if(vies==0){
 		printf("Vous avez perdu\n");
 		return 1;
 	}
