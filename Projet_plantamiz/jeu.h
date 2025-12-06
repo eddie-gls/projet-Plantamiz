@@ -23,5 +23,5 @@ void affichervie(int vies);
 void vieperdu(int *vies);
 int Perdu(int vies);
 int jeu(int niveau, char nom_joueur[]);
-void initialiserMat(char matrice[HAUTEUR][LARGEUR];
+void initialiserMat(char matrice[HAUTEUR][LARGEUR]);
 #endif // JEU_H_INCLUDED
