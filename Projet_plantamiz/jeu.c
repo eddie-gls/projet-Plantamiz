@@ -194,34 +194,46 @@ void permutation(char grille[HAUTEUR][LARGEUR], int x, int y) {
 }
 int gravite(char grille[HAUTEUR][LARGEUR]) {
     int mouvement = 0;
-
-    for (int j = 0; j < LARGEUR; j++) {
-        for (int i = HAUTEUR - 1; i > 0; i--) {
-            if (grille[i][j] == ' ' && grille[i-1][j] != ' ') {
-                grille[i][j] = grille[i-1][j];
-                grille[i-1][j] = ' ';
-                mouvement = 1;
+    int changement_tour;
+    
+    // On répète la gravité tant que des pièces bougent pour être sûr que tout est en bas
+    do {
+        changement_tour = 0;
+        for (int j = 0; j < LARGEUR; j++) {
+            for (int i = HAUTEUR - 1; i > 0; i--) {
+                // Si la case est vide et celle du dessus ne l'est pas
+                if (grille[i][j] == ' ' && grille[i-1][j] != ' ') {
+                    grille[i][j] = grille[i-1][j]; // On descend la lettre
+                    grille[i-1][j] = ' ';          // On met du vide au dessus
+                    changement_tour = 1;
+                    mouvement = 1;
+                }
             }
         }
-    }
+    } while(changement_tour == 1); // Continue tant que ça bouge
 
     return mouvement;
 }
 void remplir(char grille [HAUTEUR][LARGEUR]){
     char lettres[] = {'S', 'F', 'P', 'O', 'M'};
 
-    for (int j = 0; j < LARGEUR; j++){ // Utiliser j pour les colonnes (indices de 0 à 44)
-        if (grille[0][j] == ' '){ // Vérifie la case la plus haute
-            char nouveau_caractere;
-			int tentatives = 0;
-
+    // On parcourt uniquement la première ligne (le haut)
+    for (int j = 0; j < LARGEUR; j++){
+        if (grille[0][j] == ' '){
+            char nouveau;
+            int tentatives = 0;
+            
             do {
-                nouveau_caractere = lettres[rand() % 5];
-				tentatives++;
-            } while (tentatives < 10 && j >= 2 && nouveau_caractere == grille[0][j-1] && nouveau_caractere == grille[0][j-2]);
-
-            // Place le caractère
-            grille[0][j] = nouveau_caractere;
+                nouveau = lettres[rand() % 5];
+                tentatives++;
+                // On évite de créer un match tout de suite (Horizontal ou Vertical)
+            } while (tentatives < 20 && 
+                     (
+                        (j >= 2 && nouveau == grille[0][j-1] && nouveau == grille[0][j-2]) ||
+                        (HAUTEUR >= 3 && nouveau == grille[1][j] && nouveau == grille[2][j])
+                     )
+            );
+            grille[0][j] = nouveau;
         }
     }
 }
@@ -229,28 +241,26 @@ void remplir(char grille [HAUTEUR][LARGEUR]){
 void calibrermat (char matrice[HAUTEUR][LARGEUR]){
     int score_bidon = 0;
     int stable = 0;
-
-    // Boucle jusqu'à ce que le plateau soit stable (plus de figures, plus de gravité)
+    
+    // Boucle jusqu'à ce que le plateau soit stable
     while(!stable){
-        stable = 1;
+        // 1. D'abord, on fait tout tomber (Gravité)
+        gravite(matrice);
 
-        // 1. Détection et suppression
+        // 2. On remplit les trous en haut
+        remplir(matrice);
+
+        // 3. On refait une gravité pour être sûr que les nouvelles pièces tombent si besoin
+        gravite(matrice);
+
+        // 4. Maintenant que le plateau est plein, on cherche s'il y a des alignements
         if(detectionfigure(matrice, &score_bidon) > 0) {
+            // S'il y a des figures, detectionfigure les a supprimées (mis des ' ')
+            // Donc le plateau n'est pas stable, on recommence la boucle
             stable = 0;
-            // 2. Gravité tant que ça bouge
-            while(gravite(matrice));
-            // 3. Remplissage des trous en haut
-            remplir(matrice);
-            while(gravite(matrice)); // Gravité après remplissage
-        }
-
-        // Sécurité : Remplir si trous restants (cas initial)
-        for(int j=0; j<LARGEUR; j++) {
-            if(matrice[HAUTEUR-1][j] == ' ') {
-                 remplir(matrice);
-                 while(gravite(matrice));
-                 stable = 0;
-            }
+        } else {
+            // Aucune figure détectée, le plateau est propre, on peut jouer
+            stable = 1;
         }
     }
 }
