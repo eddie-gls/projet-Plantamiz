@@ -192,77 +192,90 @@ void permutation(char grille[HAUTEUR][LARGEUR], int x, int y) {
     grille[y][x] = grille[y2][x2];
     grille[y2][x2] = temp;
 }
-int gravite(char grille[HAUTEUR][LARGEUR]) {
+nt gravite(char grille[HAUTEUR][LARGEUR]) {
     int mouvement = 0;
-    int changement_tour;
-    
-    // On répète la gravité tant que des pièces bougent pour être sûr que tout est en bas
-    do {
-        changement_tour = 0;
-        for (int j = 0; j < LARGEUR; j++) {
-            for (int i = HAUTEUR - 1; i > 0; i--) {
-                // Si la case est vide et celle du dessus ne l'est pas
-                if (grille[i][j] == ' ' && grille[i-1][j] != ' ') {
-                    grille[i][j] = grille[i-1][j]; // On descend la lettre
-                    grille[i-1][j] = ' ';          // On met du vide au dessus
-                    changement_tour = 1;
+
+    // On traite colonne par colonne
+    for (int j = 0; j < LARGEUR; j++) {
+        int zone_ecriture = HAUTEUR - 1; // On commence à écrire en bas
+
+        // On parcourt la colonne du bas vers le haut
+        for (int i = HAUTEUR - 1; i >= 0; i--) {
+            if (grille[i][j] != ' ') {
+                // Si on trouve une lettre
+                if (zone_ecriture != i) {
+                    // On la déplace vers la zone d'écriture (plus bas)
+                    grille[zone_ecriture][j] = grille[i][j];
+                    grille[i][j] = ' '; // On efface l'ancienne position
                     mouvement = 1;
+                }
+                zone_ecriture--; // On remonte la zone d'écriture
+            }
+        }
+    }
+    return mouvement;
+}
+void remplir(char grille[HAUTEUR][LARGEUR]) {
+    char lettres[] = {'S', 'F', 'P', 'O', 'M'};
+
+    for (int i = 0; i < HAUTEUR; i++) {
+        for (int j = 0; j < LARGEUR; j++) {
+            if (grille[i][j] == ' ') {
+                // Remplit n'importe quel trou trouvé sur le plateau
+                grille[i][j] = lettres[rand() % 5];
+            }
+        }
+    }
+}
+
+void calibrermat(char matrice[HAUTEUR][LARGEUR]) {
+    char lettres[] = {'S', 'F', 'P', 'O', 'M'};
+    int modification;
+
+    // 1. On s'assure que le plateau est plein pour commencer
+    remplir(matrice); 
+
+    // 2. On boucle tant qu'il y a des alignements de 3
+    do {
+        modification = 0;
+
+        // Vérification HORIZONTALE
+        for (int i = 0; i < HAUTEUR; i++) {
+            for (int j = 0; j < LARGEUR - 2; j++) {
+                if (matrice[i][j] != ' ' && 
+                    matrice[i][j] == matrice[i][j+1] && 
+                    matrice[i][j] == matrice[i][j+2]) {
+                    
+                    // On a trouvé XXX. On change la 3ème lettre au hasard jusqu'à ce que ça casse le match
+                    char base = matrice[i][j];
+                    do {
+                        matrice[i][j+2] = lettres[rand() % 5];
+                    } while (matrice[i][j+2] == base);
+                    
+                    modification = 1;
                 }
             }
         }
-    } while(changement_tour == 1); // Continue tant que ça bouge
 
-    return mouvement;
-}
-void remplir(char grille [HAUTEUR][LARGEUR]){
-    char lettres[] = {'S', 'F', 'P', 'O', 'M'};
+        // Vérification VERTICALE
+        for (int j = 0; j < LARGEUR; j++) {
+            for (int i = 0; i < HAUTEUR - 2; i++) {
+                if (matrice[i][j] != ' ' && 
+                    matrice[i][j] == matrice[i+1][j] && 
+                    matrice[i][j] == matrice[i+2][j]) {
+                    
+                    // On change la 3ème lettre
+                    char base = matrice[i][j];
+                    do {
+                        matrice[i+2][j] = lettres[rand() % 5];
+                    } while (matrice[i+2][j] == base);
 
-    // On parcourt uniquement la première ligne (le haut)
-    for (int j = 0; j < LARGEUR; j++){
-        if (grille[0][j] == ' '){
-            char nouveau;
-            int tentatives = 0;
-            
-            do {
-                nouveau = lettres[rand() % 5];
-                tentatives++;
-                // On évite de créer un match tout de suite (Horizontal ou Vertical)
-            } while (tentatives < 20 && 
-                     (
-                        (j >= 2 && nouveau == grille[0][j-1] && nouveau == grille[0][j-2]) ||
-                        (HAUTEUR >= 3 && nouveau == grille[1][j] && nouveau == grille[2][j])
-                     )
-            );
-            grille[0][j] = nouveau;
+                    modification = 1;
+                }
+            }
         }
-    }
-}
 
-void calibrermat (char matrice[HAUTEUR][LARGEUR]){
-    int score_bidon = 0;
-    int stable = 0;
-    
-    // Boucle jusqu'à ce que le plateau soit stable
-    while(!stable){
-        // 1. D'abord, on fait tout tomber (Gravité)
-        gravite(matrice);
-
-        // 2. On remplit les trous en haut
-        remplir(matrice);
-
-        // 3. On refait une gravité pour être sûr que les nouvelles pièces tombent si besoin
-        gravite(matrice);
-
-        // 4. Maintenant que le plateau est plein, on cherche s'il y a des alignements
-        if(detectionfigure(matrice, &score_bidon) > 0) {
-            // S'il y a des figures, detectionfigure les a supprimées (mis des ' ')
-            // Donc le plateau n'est pas stable, on recommence la boucle
-            stable = 0;
-        } else {
-            // Aucune figure détectée, le plateau est propre, on peut jouer
-            stable = 1;
-        }
-    }
+    } while (modification); // On recommence tant qu'on a fait des modifs
 }
 
 int sauvegarderprogression(char nom_joueur[], int niveau){
