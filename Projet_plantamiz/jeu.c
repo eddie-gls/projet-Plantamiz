@@ -74,17 +74,33 @@ void afficherMat(char matrice[HAUTEUR][LARGEUR]) {
 }
 
 void deplacecurseur(char touche, int *x, int *y) {
-
-    if (kbhit()) {
-        touche = getch();
-        if (touche == 's' && *y < HAUTEUR-1) (*y)++;
-        else if (touche == 'z' && *y > 1) (*y)--;
-        else if (touche == 'q' && *x > 1) (*x)--;
-        else if (touche == 'd' && *x < LARGEUR-1) (*x)++;
-        gotoligcol(*y,*x);
+    // Déplacement vers le bas
+    if (touche == 's' || touche == 'S') {
+        if (*y < HAUTEUR - 1) {
+            (*y)++;
+        }
     }
+    // Déplacement vers le haut
+    else if (touche == 'z' || touche == 'Z') {
+        if (*y > 0) {
+            (*y)--;
+        }
+    }
+    // Déplacement vers la gauche
+    else if (touche == 'q' || touche == 'Q') {
+        if (*x > 0) {
+            (*x)--;
+        }
+    }
+    // Déplacement vers la droite
+    else if (touche == 'd' || touche == 'D') {
+        if (*x < LARGEUR - 1) {
+            (*x)++;
+        }
+    }
+    // Positionne le curseur à la nouvelle coordonnée (y, x)
+    gotoligcol(*y, *x);
 }
-
 int detectionfigure(char grille[HAUTEUR][LARGEUR], int *score) {
     int compteur = 0;
     char temp[HAUTEUR][LARGEUR] = {0};
@@ -192,7 +208,7 @@ void permutation(char grille[HAUTEUR][LARGEUR], int x, int y) {
     grille[y][x] = grille[y2][x2];
     grille[y2][x2] = temp;
 }
-nt gravite(char grille[HAUTEUR][LARGEUR]) {
+int gravite(char grille[HAUTEUR][LARGEUR]) {
     int mouvement = 0;
 
     // On traite colonne par colonne
@@ -233,7 +249,7 @@ void calibrermat(char matrice[HAUTEUR][LARGEUR]) {
     int modification;
 
     // 1. On s'assure que le plateau est plein pour commencer
-    remplir(matrice); 
+    remplir(matrice);
 
     // 2. On boucle tant qu'il y a des alignements de 3
     do {
@@ -242,16 +258,16 @@ void calibrermat(char matrice[HAUTEUR][LARGEUR]) {
         // Vérification HORIZONTALE
         for (int i = 0; i < HAUTEUR; i++) {
             for (int j = 0; j < LARGEUR - 2; j++) {
-                if (matrice[i][j] != ' ' && 
-                    matrice[i][j] == matrice[i][j+1] && 
+                if (matrice[i][j] != ' ' &&
+                    matrice[i][j] == matrice[i][j+1] &&
                     matrice[i][j] == matrice[i][j+2]) {
-                    
+
                     // On a trouvé XXX. On change la 3ème lettre au hasard jusqu'à ce que ça casse le match
                     char base = matrice[i][j];
                     do {
                         matrice[i][j+2] = lettres[rand() % 5];
                     } while (matrice[i][j+2] == base);
-                    
+
                     modification = 1;
                 }
             }
@@ -260,10 +276,10 @@ void calibrermat(char matrice[HAUTEUR][LARGEUR]) {
         // Vérification VERTICALE
         for (int j = 0; j < LARGEUR; j++) {
             for (int i = 0; i < HAUTEUR - 2; i++) {
-                if (matrice[i][j] != ' ' && 
-                    matrice[i][j] == matrice[i+1][j] && 
+                if (matrice[i][j] != ' ' &&
+                    matrice[i][j] == matrice[i+1][j] &&
                     matrice[i][j] == matrice[i+2][j]) {
-                    
+
                     // On change la 3ème lettre
                     char base = matrice[i][j];
                     do {
