@@ -192,7 +192,7 @@ void permutation(char grille[HAUTEUR][LARGEUR], int x, int y) {
     grille[y][x] = grille[y2][x2];
     grille[y2][x2] = temp;
 }
-nt gravite(char grille[HAUTEUR][LARGEUR]) {
+int gravite(char grille[HAUTEUR][LARGEUR]) {
     int mouvement = 0;
 
     // On traite colonne par colonne
