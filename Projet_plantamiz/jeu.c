@@ -20,7 +20,7 @@ void afficherCadre() {
     int i;
     // Cadre extérieur pour entourer la matrice de 25x45
     // Le cadre va de 0 à LARGEUR+1 en X et 0 à HAUTEUR+1 en Y
-    
+
     gotoligcol(0, 0);
     printf("%c", 0xDA);
     for (i = 0; i < LARGEUR; i++){ // Correction pour couvrir toute la largeur
@@ -53,12 +53,12 @@ void initialiserMat(char matrice[HAUTEUR][LARGEUR]){
 }
 void afficherMat(char matrice[HAUTEUR][LARGEUR]) {
     int i, j;
-    
+
     for (i = 0; i < HAUTEUR; i++) {
         for (j = 0; j < LARGEUR; j++) {
             // On décale de +1 car le cadre est en 0
             gotoligcol(i + 1, j + 1);
-            
+
             switch (matrice[i][j]) {
                 case 'S': Color(14, 0); break; // Jaune
                 case 'F': Color(12, 0); break; // Rouge
@@ -94,7 +94,7 @@ int detectionfigure(char grille[HAUTEUR][LARGEUR], int *score) {
         for (int j = 0; j < LARGEUR; j++) {
             if (grille[i][j] != ' ') {
                 char c = grille[i][j];
-                
+
                 // Rectangle
                 int largeur = 1, hauteur = 1;
                 while (j + largeur < LARGEUR && grille[i][j + largeur] == c) largeur++;
@@ -218,7 +218,7 @@ void remplir(char grille [HAUTEUR][LARGEUR]){
             do {
                 nouveau_caractere = lettres[rand() % 5];
 				tentatives++;
-            } while (tentatives < 10 && j >= 2 && nouveau == grille[0][j-1] && nouveau == grille[0][j-2]);
+            } while (tentatives < 10 && j >= 2 && nouveau_caractere == grille[0][j-1] && nouveau_caractere == grille[0][j-2]);
 
             // Place le caractère
             grille[0][j] = nouveau_caractere;
@@ -229,21 +229,21 @@ void remplir(char grille [HAUTEUR][LARGEUR]){
 void calibrermat (char matrice[HAUTEUR][LARGEUR]){
     int score_bidon = 0;
     int stable = 0;
-    
+
     // Boucle jusqu'à ce que le plateau soit stable (plus de figures, plus de gravité)
     while(!stable){
         stable = 1;
-        
+
         // 1. Détection et suppression
         if(detectionfigure(matrice, &score_bidon) > 0) {
             stable = 0;
             // 2. Gravité tant que ça bouge
-            while(gravite(matrice)); 
+            while(gravite(matrice));
             // 3. Remplissage des trous en haut
             remplir(matrice);
             while(gravite(matrice)); // Gravité après remplissage
         }
-        
+
         // Sécurité : Remplir si trous restants (cas initial)
         for(int j=0; j<LARGEUR; j++) {
             if(matrice[HAUTEUR-1][j] == ' ') {
@@ -336,7 +336,7 @@ int jeu(int niveau, char nom_joueur[]) {
 
     score_actuel = 0; // Remise à zéro du score après calibration
     afficherMat(matrice);
-    
+
 
 
     // 2. Boucle de Jeu
@@ -355,7 +355,7 @@ int jeu(int niveau, char nom_joueur[]) {
 
         if (_kbhit()) {
             touche = _getch();
-           
+
 
             if (touche == ' ') {
 
@@ -383,7 +383,7 @@ int jeu(int niveau, char nom_joueur[]) {
                         afficherMat(matrice);
                     }
                 } while (combo > 0);
-                
+
             } else {
                 deplacecurseur(touche, &x_curseur, &y_curseur);
             }
