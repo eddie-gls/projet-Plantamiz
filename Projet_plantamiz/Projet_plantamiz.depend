@@ -27,3 +27,24 @@
 1765041038 source:c:\users\claud\documents\ece\projet-plantamiz\projet_plantamiz\jeu.c
 	"jeu.h"
 
+1765060614 source:c:\users\gallo\onedrive\documents\github\projet-plantamiz\projet_plantamiz\jeu.c
+	"jeu.h"
+
+1765056775 c:\users\gallo\onedrive\documents\github\projet-plantamiz\projet_plantamiz\jeu.h
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<time.h>
+	<windows.h>
+
+1765056773 source:c:\users\gallo\onedrive\documents\github\projet-plantamiz\projet_plantamiz\main.c
+	"main.h"
+	"jeu.h"
+
+1765048591 c:\users\gallo\onedrive\documents\github\projet-plantamiz\projet_plantamiz\main.h
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<time.h>
+	<windows.h>
+

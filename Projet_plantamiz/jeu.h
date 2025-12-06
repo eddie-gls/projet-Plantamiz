@@ -17,11 +17,11 @@ int detectionfigure(char grille[HAUTEUR][LARGEUR], int *score); //detecte les fi
 int gravite(char grille[HAUTEUR][LARGEUR]); // applique la gravité.
 void remplir(char grille [HAUTEUR][LARGEUR]); // rempit toutes les cases vides
 void calibrermat (char matrice[HAUTEUR][LARGEUR]); //calibre la matrice au début du jeu
-int sauvegarderprogression(char nom_joueur[], int niveau);
-int chargerprogression(char nom_joueur[],int *niveau);
-void affichervie(int vies);
-void vieperdu(int *vies);
-int Perdu(int vies);
-int jeu(int niveau, char nom_joueur[]);
-void initialiserMat(char matrice[HAUTEUR][LARGEUR]);
+int sauvegarderprogression(char nom_joueur[], int niveau); // sauvegarde la progression du joueur, son nom et son niveau
+int chargerprogression(char nom_joueur[],int *niveau); // permet de reprendre son niveau et son nom de joueur
+void affichervie(int vies); // affiche les vies du joueur
+void vieperdu(int *vies); // enlève une vie au joueur
+int Perdu(int vies); // GAME OVER quand le joueur n'a plus de vies
+int jeu(int niveau, char nom_joueur[]); // corps général du jeu
+void initialiserMat(char matrice[HAUTEUR][LARGEUR]); // Initialise la matrice avec ses items
 #endif // JEU_H_INCLUDED
