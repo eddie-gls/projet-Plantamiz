@@ -16,7 +16,7 @@ int menu(){
     printf("3.Niveau difficile\n");
     scanf("%d",&choix);
 
-    if (choix<1 || choix>3){
+    while (choix<1 || choix>3){
         printf("Veuillez saisir un nombre entre 1 et 3\n");
         scanf("%d",&choix);
     }
@@ -25,7 +25,8 @@ int menu(){
 }
 
 int main () {
-    // 1. Démarrage du jeu
+    // 1. DÃ©marrage du jeu
+    srand(time(NULL));
     afficherregles();
 
     char nom_joueur[100];
@@ -33,7 +34,7 @@ int main () {
 
     // 2. Charger la progression
     if (chargerprogression(nom_joueur, &niveau_sauvegarde) == 1) {
-        // La fonction chargerprogression doit être implémentée dans jeu.c
+        // La fonction chargerprogression doit Ãªtre implÃ©mentÃ©e dans jeu.c
         printf("Progression chargee pour %s au niveau %d.\n", nom_joueur, niveau_sauvegarde);
     } else {
         printf("Entrez votre nom : ");
