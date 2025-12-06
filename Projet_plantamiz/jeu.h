@@ -12,6 +12,15 @@ void gotoligcol(int lig, int col); //déplacement du curseur à la position (lig, 
 void afficherCadre(); //affiche la zone du jeu
 void afficherMat(char matrice[HAUTEUR][LARGEUR]); // affiche la matrice avec les items générer de manière aléatoire
 void deplacecurseur(char touche, int *x, int *y); // déplace le curseur en fonction de la touche presser
-void permutation(int grille[HAUTEUR][LARGEUR], int x, int y); // permutation de deux objets
-lieu* lieualignement(char grille [HAUTEUR][LARGEUR]);// renvoie une liste chainée qui a dans chaque structure les coordonées x et y de ou se trouve les emplacements libre
+void permutation(char grille[HAUTEUR][LARGEUR], int x, int y); // permutation de deux objets
+int detectionfigure(char grille[HAUTEUR][LARGEUR], int *score); //detecte les figures demandé par le programme
+int gravite(char grille[HAUTEUR][LARGEUR]); // applique la gravité.
+void remplir(char grille [HAUTEUR][LARGEUR]); // rempit toutes les cases vides
+void calibrermat (char matrice[HAUTEUR][LARGEUR]); //calibre la matrice au début du jeu
+int sauvegarderprogression(char nom_joueur[], int niveau);
+int chargerprogression(char nom_joueur[],int *niveau);
+void affichervie(int vies);
+void vieperdu(int *vies);
+int Perdu(int vies);
+int jeu(int niveau, char nom_joueur[]);
 #endif // JEU_H_INCLUDED

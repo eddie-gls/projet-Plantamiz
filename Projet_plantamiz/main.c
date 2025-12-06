@@ -20,36 +20,31 @@ int menu(){
         printf("Veuillez saisir un nombre entre 1 et 3\n");
         scanf("%d",&choix);
     }
-    
+
     return choix;
 }
 
-int main (){
-     return 0;
-}
+int main () {
+    // 1. Démarrage du jeu
+    afficherregles();
 
-int chargerprogression(char nom_joueur[],int *niveau){
     char nom_joueur[100];
-	int niveau;
-	if (chargerprogression(nom_joueur,&niveau)){
-		printf("%s, niveau : %d",nom_joueur,niveau);
-	}
-	else{
-		printf("entrer votre nom");
-		scanf("%s",nom_joueur);
-		niveau=1;
-	}
-	return 0;
-}
+    int niveau_sauvegarde = 1;
 
-int main(){
-    int vies=5;
-	affichervie(hauteur,largeur,vies);
-	vieperdu(&vies);
-	affichervie(hauteur,largeur,vies);
-	if (perdu(vies)){
-		printf("Vous avez perdu");
-		sauvegarderprogression(nom_joueur,niveau)
-		return 0;
-	}
+    // 2. Charger la progression
+    if (chargerprogression(nom_joueur, &niveau_sauvegarde) == 1) {
+        // La fonction chargerprogression doit être implémentée dans jeu.c
+        printf("Progression chargee pour %s au niveau %d.\n", nom_joueur, niveau_sauvegarde);
+    } else {
+        printf("Entrez votre nom : ");
+        scanf("%s", nom_joueur);
+    }
+
+    // 3. Choix du niveau
+    int choix_niveau = menu();
+
+    // 4. Lancement de la boucle de jeu
+    jeu(choix_niveau, nom_joueur);
+
+    return 0;
 }
