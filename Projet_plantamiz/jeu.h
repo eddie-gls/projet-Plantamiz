@@ -8,19 +8,20 @@
 #define LARGEUR 45
 #include <windows.h>
 void Color(int couleurDuTexte,int couleurDeFond); // fonction d'affichage de couleurs
-void gotoligcol(int lig, int col); //déplacement du curseur à la position (lig, col)
+void gotoligcol(int lig, int col); //dÃ©placement du curseur Ã  la position (lig, col)
 void afficherCadre(); //affiche la zone du jeu
-void afficherMat(char matrice[HAUTEUR][LARGEUR]); // affiche la matrice avec les items générer de manière aléatoire
-void deplacecurseur(char touche, int *x, int *y); // déplace le curseur en fonction de la touche presser
+void afficherMat(char matrice[HAUTEUR][LARGEUR]); // affiche la matrice avec les items gÃ©nÃ©rer de maniÃ¨re alÃ©atoire
+void deplacecurseur(char touche, int *x, int *y); // dÃ©place le curseur en fonction de la touche presser
 void permutation(char grille[HAUTEUR][LARGEUR], int x, int y); // permutation de deux objets
-int detectionfigure(char grille[HAUTEUR][LARGEUR], int *score); //detecte les figures demandé par le programme
-int gravite(char grille[HAUTEUR][LARGEUR]); // applique la gravité.
+int detectionfigure(char grille[HAUTEUR][LARGEUR], int *score); //detecte les figures demandÃ© par le programme
+int gravite(char grille[HAUTEUR][LARGEUR]); // applique la gravitÃ©.
 void remplir(char grille [HAUTEUR][LARGEUR]); // rempit toutes les cases vides
-void calibrermat (char matrice[HAUTEUR][LARGEUR]); //calibre la matrice au début du jeu
+void calibrermat (char matrice[HAUTEUR][LARGEUR]); //calibre la matrice au dÃ©but du jeu
 int sauvegarderprogression(char nom_joueur[], int niveau);
 int chargerprogression(char nom_joueur[],int *niveau);
 void affichervie(int vies);
 void vieperdu(int *vies);
 int Perdu(int vies);
 int jeu(int niveau, char nom_joueur[]);
+void initialiserMat(char matrice[HAUTEUR][LARGEUR];
 #endif // JEU_H_INCLUDED
