@@ -35,6 +35,9 @@
 			<Option compilerVar="CC" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="detectfigure.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="jeu.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -79,10 +79,10 @@ void afficherMat(char matrice[HAUTEUR][LARGEUR]) {
 void deplacecurseur(char touche, int *x, int *y) {
     if (kbhit()) {
         touche = getch();
-        if (touche == 's' && *y < HAUTEUR) (*y)++;
+        if (touche == 's' && *y < HAUTEUR-1) (*y)++;
         else if (touche == 'z' && *y > 1) (*y)--;
         else if (touche == 'q' && *x > 1) (*x)--;
-        else if (touche == 'd' && *x < LARGEUR) (*x)++;
+        else if (touche == 'd' && *x < LARGEUR-1) (*x)++;
         gotoligcol(*y,*x);
     }
 }
@@ -415,8 +415,7 @@ int jeu(int niveau, char nom_joueur[]) {
         // Affichage des informations
         gotoligcol(HAUTEUR + 1, 0);
         Color(7, 0);
-        printf("Joueur: %s | Niveau: %d | Objectif: %d | Coups: %d | Score: %d |             ",
-               nom_joueur, niveau, score_contrat, coups_restants, score_actuel);
+        printf("Joueur: %s | Niveau: %d | Objectif: %d | Coups: %d | Score: %d ",nom_joueur, niveau, score_contrat, coups_restants, score_actuel);
 
         affichervie(vies); // Signature corrigée
 
