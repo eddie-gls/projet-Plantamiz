@@ -8,7 +8,7 @@ void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de coul
 
 
 
-// D�placement du curseur
+// Deplacement du curseur
 void gotoligcol(int lig, int col) {
     COORD mycoord;
     mycoord.X = col;
@@ -19,16 +19,15 @@ void gotoligcol(int lig, int col) {
 void afficherCadre() {
     int i;
     // Cadre extérieur pour entourer la matrice de 25x45
-    // Le cadre va de 0 à LARGEUR+1 en X et 0 à HAUTEUR+1 en Y
 
     gotoligcol(0, 0);
     printf("%c", 0xDA);
-    for (i = 0; i < LARGEUR; i++){ // Correction pour couvrir toute la largeur
+    for (i = 0; i < LARGEUR; i++){
          printf("%c", 0xC4);
     }
     printf("%c", 0xBF);
 
-    for (i = 0; i < HAUTEUR; i++) { // Correction pour couvrir toute la hauteur
+    for (i = 0; i < HAUTEUR; i++) {
         gotoligcol(i + 1, 0);
         printf("%c", 0xB3);
         gotoligcol(i + 1, LARGEUR + 1);
@@ -44,7 +43,6 @@ void afficherCadre() {
 }
 void initialiserMat(char matrice[HAUTEUR][LARGEUR]){
 	char lettres[] = {'S', 'F', 'P', 'O', 'M'};
-    // srand(time(NULL)); est déplacé dans main()
     for (int i = 0; i < HAUTEUR; i++) {
         for (int j = 0; j < LARGEUR; j++) {
             matrice[i][j] = lettres[rand() % 5];
@@ -76,13 +74,13 @@ void afficherMat(char matrice[HAUTEUR][LARGEUR]) {
 void deplacecurseur(char touche, int *x, int *y) {
     // Déplacement vers le bas
     if (touche == 's' || touche == 'S') {
-        if (*y < HAUTEUR - 1) {
+        if (*y < HAUTEUR) {
             (*y)++;
         }
     }
     // Déplacement vers le haut
     else if (touche == 'z' || touche == 'Z') {
-        if (*y > 0) {
+        if (*y >0) {
             (*y)--;
         }
     }
@@ -94,7 +92,7 @@ void deplacecurseur(char touche, int *x, int *y) {
     }
     // Déplacement vers la droite
     else if (touche == 'd' || touche == 'D') {
-        if (*x < LARGEUR - 1) {
+        if (*x < LARGEUR) {
             (*x)++;
         }
     }
@@ -105,7 +103,7 @@ int detectionfigure(char grille[HAUTEUR][LARGEUR], int *score) {
     int compteur = 0;
     char temp[HAUTEUR][LARGEUR] = {0};
 
-    // --- DETECTION HORIZONTALE ---
+    // detection de l'alignement horizontal
     for (int i = 0; i < HAUTEUR; i++) {
         for (int j = 0; j < LARGEUR; j++) {
             if (grille[i][j] != ' ') {
@@ -141,7 +139,7 @@ int detectionfigure(char grille[HAUTEUR][LARGEUR], int *score) {
                             for (int k = 0; k < L; k++) temp[i][start + k] = 1;
                             temp[i - 1][centre] = 1;
                             temp[i + 1][centre] = 1;
-                            *score += 10; // Simplification score H
+                            *score += 2*(2*L+1); // Simplification score H
                             compteur++;
                         }
                     }
@@ -155,13 +153,13 @@ int detectionfigure(char grille[HAUTEUR][LARGEUR], int *score) {
         }
     }
 
-    // --- DETECTION VERTICALE ---
+    //detection de l'alignement vertical
     for (int col = 0; col < LARGEUR; col++) {
-        for (int row = 0; row < HAUTEUR; row++) {
-            if (grille[row][col] != ' ') {
-                char c = grille[row][col];
+        for (int ligne = 0; ligne < HAUTEUR; ligne++) {
+            if (grille[ligne][col] != ' ') {
+                char c = grille[ligne][col];
                 int H = 1;
-                int start = row;
+                int start = ligne;
 
                 while (start + H < HAUTEUR && grille[start + H][col] == c) H++;
 
@@ -170,12 +168,12 @@ int detectionfigure(char grille[HAUTEUR][LARGEUR], int *score) {
                     *score += H;
                     compteur++;
                 }
-                row += (H - 1);
+                ligne += (H - 1);
             }
         }
     }
 
-    // SUPPRESSION
+    // suppression des alignements
     for (int i = 0; i < HAUTEUR; i++) {
         for (int j = 0; j < LARGEUR; j++) {
             if (temp[i][j] == 1) grille[i][j] = ' ';
@@ -248,21 +246,17 @@ void calibrermat(char matrice[HAUTEUR][LARGEUR]) {
     char lettres[] = {'S', 'F', 'P', 'O', 'M'};
     int modification;
 
-    // 1. On s'assure que le plateau est plein pour commencer
+    // On s'assure que le plateau est plein pour commencer
     remplir(matrice);
 
-    // 2. On boucle tant qu'il y a des alignements de 3
+    // On execute tant qu'il y a des alignements de 3
     do {
         modification = 0;
 
-        // Vérification HORIZONTALE
+        // Vérification horizontale
         for (int i = 0; i < HAUTEUR; i++) {
             for (int j = 0; j < LARGEUR - 2; j++) {
-                if (matrice[i][j] != ' ' &&
-                    matrice[i][j] == matrice[i][j+1] &&
-                    matrice[i][j] == matrice[i][j+2]) {
-
-                    // On a trouvé XXX. On change la 3ème lettre au hasard jusqu'à ce que ça casse le match
+                if (matrice[i][j] != ' ' && matrice[i][j] == matrice[i][j+1] &&matrice[i][j] == matrice[i][j+2]) {
                     char base = matrice[i][j];
                     do {
                         matrice[i][j+2] = lettres[rand() % 5];
@@ -273,7 +267,7 @@ void calibrermat(char matrice[HAUTEUR][LARGEUR]) {
             }
         }
 
-        // Vérification VERTICALE
+        // Vérification verticale
         for (int j = 0; j < LARGEUR; j++) {
             for (int i = 0; i < HAUTEUR - 2; i++) {
                 if (matrice[i][j] != ' ' &&
@@ -291,7 +285,7 @@ void calibrermat(char matrice[HAUTEUR][LARGEUR]) {
             }
         }
 
-    } while (modification); // On recommence tant qu'on a fait des modifs
+    } while (modification);
 }
 
 int sauvegarderprogression(char nom_joueur[], int niveau){
@@ -331,7 +325,7 @@ void affichervie(int vies){
     Color(12,0);
     printf("Vies : ");
     for(int i=0; i<vies; i++) printf("%c ", 3); // Coeurs
-    printf("     "); // Efface les anciens coeurs si vies perdues
+    printf("%d \n", vies); // Efface les anciens coeurs si vies perdues
     Color(7,0);
 }
 
@@ -353,7 +347,7 @@ int Perdu(int vies){
 int jeu(int niveau, char nom_joueur[]) {
     char matrice[HAUTEUR][LARGEUR];
     int vies = 5;
-    int coups_max = 50 + (niveau - 1) * 10;
+    int coups_max = 20 + (niveau - 1) * 10;
     int coups_restants = coups_max;
     int score_actuel = 0;
     int score_contrat = 500 + (niveau - 1) * 200;
@@ -361,64 +355,48 @@ int jeu(int niveau, char nom_joueur[]) {
     char touche;
 
 
-    // 1. Initialisation et Calibration
+    // Initialisation et Calibration
     afficherCadre();
     initialiserMat(matrice);
 
-    gotoligcol(HAUTEUR + 3, 0);
-    printf("Calibrage du plateau en cours...");
-
-    // Calibrage qui doit boucler
     calibrermat(matrice);
 	gotoligcol(HAUTEUR + 3, 0);
     printf("            "); // Efface le message
 
-    score_actuel = 0; // Remise à zéro du score après calibration
+    score_actuel = 0;
     afficherMat(matrice);
 
 
 
-    // 2. Boucle de Jeu
+    // Jeu
     while (coups_restants > 0 && !Perdu(vies) && score_actuel < score_contrat) {
-
         // Affichage des informations
         gotoligcol(HAUTEUR + 1, 0);
         Color(7, 0);
-
         printf("Joueur: %s | Niveau: %d | Objectif: %d | Coups: %d | Score: %d ",nom_joueur, niveau, score_contrat, coups_restants, score_actuel);
-
-
-        affichervie(vies); // Signature corrigée
-
+        affichervie(vies);
         gotoligcol(y_curseur, x_curseur);
-
         if (_kbhit()) {
             touche = _getch();
-
-
             if (touche == ' ') {
-
-                // 1. Permutation
-                // La fonction permutation lit une direction (z,q,s,d) et fait l'échange avec la case cible.
+                // La fonction permutation lit une direction (z,q,s,d) et fait l'échange avec l'item.
                 permutation(matrice, x_curseur - 1, y_curseur - 1);
 
                 afficherMat(matrice);
                 coups_restants--;
 				afficherMat(matrice);
-                Sleep(200); // Petite pause visuelle
-
-               // Cascade
+                Sleep(200);
                 int combo;
                 do {
                     combo = detectionfigure(matrice, &score_actuel);
                     if (combo > 0) {
                         afficherMat(matrice);
-                        Sleep(100); // Animation
+                        Sleep(100);
                         while(gravite(matrice)) {
-                             afficherMat(matrice); // Voir tomber
+                             afficherMat(matrice);
                         }
                         remplir(matrice);
-                        while(gravite(matrice)); // Faire tomber les nouveaux
+                        while(gravite(matrice));
                         afficherMat(matrice);
                     }
                 } while (combo > 0);
@@ -427,11 +405,11 @@ int jeu(int niveau, char nom_joueur[]) {
                 deplacecurseur(touche, &x_curseur, &y_curseur);
             }
         }
-        Sleep(50); // Important pour ne pas surcharger le processeur
+        Sleep(50);
     }
 
     // Fin de partie
-    gotoligcol(10, 10);
+    gotoligcol(0, LARGEUR);
     if (Perdu(vies)) {
         printf("GAME OVER. Score: %d", score_actuel);
         sauvegarderprogression(nom_joueur, niveau);
@@ -446,6 +424,6 @@ int jeu(int niveau, char nom_joueur[]) {
         vieperdu(&vies);
         sauvegarderprogression(nom_joueur, niveau);
         getch();
-        return 0;
+        return 2;
     }
 }
