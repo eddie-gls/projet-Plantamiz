@@ -68,7 +68,7 @@ void afficherMat(char matrice[HAUTEUR][LARGEUR]) {
             printf("%c", matrice[i][j]);
         }
     }
-    Color(7, 0); // Remettre blanc
+    Color(7, 0); // Remettre en blanc
 }
 
 void deplacecurseur(char touche, int *x, int *y) {
